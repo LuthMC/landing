@@ -401,10 +401,6 @@
                     <span class="stat-number">50+</span>
                     <span class="stat-label">Commands</span>
                 </div>
-                <div class="stat">
-                    <span class="stat-number">99.9%</span>
-                    <span class="stat-label">Uptime</span>
-                </div>
             </div>
         </div>
     </div>
@@ -450,7 +446,7 @@
         // Animate stats counter on page load
         function animateStats() {
             const statNumbers = document.querySelectorAll('.stat-number');
-            const targets = ['40+', '4000+', '50+', '99.9%'];
+            const targets = ['40+', '4000+', '50+'];
             
             statNumbers.forEach((stat, index) => {
                 stat.textContent = '0';
