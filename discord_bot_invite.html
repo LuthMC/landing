@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite CyberBot - Discord Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0d1421 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #5865f2, #7289da);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invite-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+            animation: cardEntry 0.8s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes cardEntry {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .invite-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(88, 101, 242, 0.5), transparent);
+        }
+
+        .bot-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.2);
+            overflow: hidden;
+        }
+
+        .bot-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.2); }
+            50% { box-shadow: 0 0 0 8px rgba(88, 101, 242, 0.4); }
+        }
+
+        .bot-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bot-description {
+            font-size: 1.1rem;
+            color: #b8bcc8;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature {
+            background: rgba(88, 101, 242, 0.08);
+            border: 1px solid rgba(88, 101, 242, 0.15);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(135deg, #5865f2, #7c3aed);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            background: rgba(88, 101, 242, 0.15);
+            border-color: rgba(88, 101, 242, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 8px 32px rgba(88, 101, 242, 0.15);
+        }
+
+        .feature:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(88, 101, 242, 0.2);
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .feature-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-description {
+            font-size: 0.85rem;
+            color: #b8bcc8;
+            line-height: 1.4;
+        }
+
+        .invite-button {
+            background: linear-gradient(135deg, #5865f2, #7c3aed);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(88, 101, 242, 0.3);
+        }
+
+        .invite-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .invite-button:hover::before {
+            left: 100%;
+        }
+
+        .invite-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(88, 101, 242, 0.4);
+        }
+
+        .invite-button:active {
+            transform: translateY(-1px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5865f2;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(88, 101, 242, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: glow 4s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .invite-card {
+                padding: 2rem;
+            }
+            
+            .features {
+                gap: 0.5rem;
+            }
+            
+            .feature {
+                padding: 1rem;
+            }
+            
+            .feature-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1.25rem;
+            }
+            
+            .feature:hover {
+                transform: translateX(4px);
+            }
+            
+            .bot-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="invite-card">
+            <div class="glow-effect"></div>
+            
+            <div class="bot-avatar">
+                <img src="https://via.placeholder.com/120x120/5865f2/ffffff?text=🤖" alt="Bot Avatar" onerror="this.style.display='none'; this.parentNode.innerHTML='🤖';">
+            </div>
+            
+            <h1 class="bot-name">CyberBot</h1>
+            <p class="bot-description">
+                The ultimate Discord companion with advanced moderation, entertainment, and utility features to supercharge your server experience.
+            </p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-content">
+                        <div class="feature-title">Advanced Moderation</div>
+                        <div class="feature-description">Intelligent auto-moderation with customizable filters and anti-spam protection</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-content">
+                        <div class="feature-title">Free Subdomain Creation</div>
+                        <div class="feature-description">Generate custom subdomains instantly for your server or projects - completely free</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎵</div>
+                    <div class="feature-content">
+                        <div class="feature-title">High-Quality Music</div>
+                        <div class="feature-description">Crystal clear audio streaming from multiple sources with queue management</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-content">
+                        <div class="feature-title">Server Analytics</div>
+                        <div class="feature-description">Detailed insights and statistics to help grow and manage your community</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-content">
+                        <div class="feature-title">Lightning Fast</div>
+                        <div class="feature-description">99.9% uptime with instant response times and reliable performance</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#" class="invite-button" onclick="inviteBot()">
+                Add to Server
+            </a>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">15.2K</span>
+                    <span class="stat-label">Servers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">2.1M</span>
+                    <span class="stat-label">Users</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">99.9%</span>
+                    <span class="stat-label">Uptime</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2-6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Simulate bot invite (replace with actual Discord invite URL)
+        function inviteBot() {
+            // Replace this with your actual Discord bot invite URL
+            const inviteUrl = 'https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID&permissions=8&scope=bot%20applications.commands';
+            
+            // For demo purposes, show an alert
+            alert('Opening Discord invite...\n\nReplace the inviteUrl variable with your actual Discord bot invite URL!');
+            
+            // Uncomment the line below and replace with your actual invite URL
+            // window.open(inviteUrl, '_blank');
+        }
+
+        // Animate stats counter on page load
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const targets = ['15.2K', '2.1M', '99.9%'];
+            
+            statNumbers.forEach((stat, index) => {
+                stat.textContent = '0';
+                setTimeout(() => {
+                    stat.style.transition = 'all 1s ease';
+                    stat.textContent = targets[index];
+                }, 500 + index * 200);
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            animateStats();
+        });
+
+        // Add subtle mouse movement effect for desktop only
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', function(e) {
+                const card = document.querySelector('.invite-card');
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            // Reset card rotation when mouse leaves
+            document.addEventListener('mouseleave', function() {
+                const card = document.querySelector('.invite-card');
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            });
+        }
+    </script>
+</body>
+</html>
