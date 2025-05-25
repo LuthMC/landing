@@ -139,6 +139,56 @@
             line-height: 1.6;
         }
 
+        /* Uptime counter styles */
+        .uptime-display {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .uptime-display::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .uptime-icon {
+            font-size: 1.25rem;
+            color: #22c55e;
+        }
+
+        .uptime-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .uptime-percentage {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #22c55e;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+            transition: all 0.3s ease;
+        }
+
         .features {
             display: flex;
             flex-direction: column;
@@ -327,6 +377,14 @@
             .bot-name {
                 font-size: 2rem;
             }
+
+            .uptime-display {
+                padding: 0.75rem 1rem;
+            }
+
+            .uptime-percentage {
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -345,6 +403,13 @@
             <p class="bot-description">
                 The ultimate discord bot multipurpose with advanced moderation, entertainment, and utility features to supercharge your server experience.
             </p>
+
+            <!-- Uptime Display -->
+            <div class="uptime-display">
+                <div class="uptime-icon">⚡</div>
+                <div class="uptime-text">Uptime:</div>
+                <div class="uptime-percentage" id="uptimeCounter">99.9%</div>
+            </div>
             
             <div class="features">
                 <div class="feature">
@@ -432,6 +497,39 @@
             }
         }
 
+        // Uptime counter animation
+        function startUptimeCounter() {
+            const uptimeElement = document.getElementById('uptimeCounter');
+            let currentUptime = 1;
+            
+            const interval = setInterval(() => {
+                // Increment rapidly to complete 1-99% in 1 second total
+                currentUptime += 98 / 100; // 98% spread over 100 intervals = 0.98% per 10ms
+                
+                // Stop at 99%
+                if (currentUptime >= 99) {
+                    currentUptime = 99;
+                    clearInterval(interval);
+                }
+                
+                // Format and display
+                const displayValue = Math.floor(currentUptime);
+                uptimeElement.textContent = displayValue + '%';
+                
+                // Add visual effects based on uptime level
+                if (currentUptime >= 95) {
+                    uptimeElement.style.color = '#22c55e';
+                    uptimeElement.style.textShadow = '0 0 10px rgba(34, 197, 94, 0.5)';
+                } else if (currentUptime >= 80) {
+                    uptimeElement.style.color = '#eab308';
+                    uptimeElement.style.textShadow = '0 0 10px rgba(234, 179, 8, 0.5)';
+                } else {
+                    uptimeElement.style.color = '#ef4444';
+                    uptimeElement.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
+                }
+            }, 10); // Update every 10ms for smooth animation over 1 second total
+        }
+
         // Simulate bot invite (replace with actual Discord invite URL)
         function inviteBot() {
             // Replace this with your actual Discord bot invite URL
@@ -461,6 +559,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             animateStats();
+            startUptimeCounter();
         });
     </script>
 </body>
