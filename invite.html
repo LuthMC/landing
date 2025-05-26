@@ -401,7 +401,7 @@
             
             <h1 class="bot-name">Neura</h1>
             <p class="bot-description">
-                The ultimate discord bot multipurpose with advanced moderation, entertainment, and utility features to supercharge your server experience.
+                The ultimate discord bot multipurpose with advanced moderation, entertainment, and utility features to level up your server.
             </p>
 
             <!-- Uptime Display -->
@@ -416,7 +416,7 @@
                     <div class="feature-icon">🛡️</div>
                     <div class="feature-content">
                         <div class="feature-title">Advanced Moderation</div>
-                        <div class="feature-description">Intelligent auto-moderation with customizable filters and anti-invite links protection</div>
+                        <div class="feature-description">Intelligent auto-moderation with customizable filters and captcha protection</div>
                     </div>
                 </div>
                 <div class="feature">
@@ -430,7 +430,7 @@
                     <div class="feature-icon">🎵</div>
                     <div class="feature-content">
                         <div class="feature-title">High-Quality Music</div>
-                        <div class="feature-description">Crystal clear audio streaming from multiple sources with queue management</div>
+                        <div class="feature-description">Crystal clear audio streaming from multiple sources</div>
                     </div>
                 </div>
                 <div class="feature">
@@ -471,7 +471,6 @@
     </div>
 
     <script>
-        // Create floating particles
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
             const particleCount = 50;
@@ -480,16 +479,13 @@
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
-                // Random size between 2-6px
                 const size = Math.random() * 4 + 2;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 
-                // Random position
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
                 
-                // Random animation delay
                 particle.style.animationDelay = Math.random() * 6 + 's';
                 particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
                 
@@ -497,26 +493,21 @@
             }
         }
 
-        // Uptime counter animation
         function startUptimeCounter() {
             const uptimeElement = document.getElementById('uptimeCounter');
             let currentUptime = 3;
             
             const interval = setInterval(() => {
-                // Increment rapidly to complete 1-99% in 1 second total
-                currentUptime += 98 / 100; // 98% spread over 100 intervals = 0.98% per 10ms
+                currentUptime += 98 / 100;
                 
-                // Stop at 99%
                 if (currentUptime >= 99) {
                     currentUptime = 99;
                     clearInterval(interval);
                 }
                 
-                // Format and display
                 const displayValue = Math.floor(currentUptime);
                 uptimeElement.textContent = displayValue + '%';
                 
-                // Add visual effects based on uptime level
                 if (currentUptime >= 95) {
                     uptimeElement.style.color = '#22c55e';
                     uptimeElement.style.textShadow = '0 0 10px rgba(34, 197, 94, 0.5)';
@@ -527,21 +518,13 @@
                     uptimeElement.style.color = '#ef4444';
                     uptimeElement.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
                 }
-            }, 20); // Update every 10ms for smooth animation over 1 second total
+            }, 20);
         }
 
-        // Simulate bot invite (replace with actual Discord invite URL)
         function inviteBot() {
-            // Replace this with your actual Discord bot invite URL
-            const inviteUrl = 'https://discord.com/api/oauth2/authorize?client_id=1197446681688555521&permissions=8&scope=bot%20applications.commands';
-            
-            // For demo purposes, show an alert
-            
-            // Uncomment the line below and replace with your actual invite URL
-            // window.open(inviteUrl, '_blank');
+            const inviteUrl = 'https://discord.com/api/oauth2/authorize?client_id=1197446681688555521&permissions=8&scope=bot%20applications.commands'
         }
 
-        // Animate stats counter on page load
         function animateStats() {
             const statNumbers = document.querySelectorAll('.stat-number');
             const targets = ['40+', '4000+', '50+'];
@@ -555,7 +538,6 @@
             });
         }
 
-        // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             animateStats();
